@@ -24,3 +24,14 @@ source /home/USER_NAME/Swarm_ws/devel/setup.bash
 ```
 
 5. 开发
+```
+# 开发前获取最新版本
+git pull
+# 可选，更新子模块
+git submodule update
+# 开发过程中，可以回到~/Swarm_ws/src目录下，提交代码
+git add .
+git commit -m "say something"
+# 开发完成后，上传代码
+git push
+```
