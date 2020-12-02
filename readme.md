@@ -7,8 +7,11 @@ cd ~/Swarm_ws
 
 2. 下载本仓库及子模块
 ```
-git clone https://github.com/KennethYangle/Swarm_ws.git --recursive
+git clone https://github.com/KennethYangle/Swarm_ws.git
 mv Swarm_ws src
+cd src
+git submodule init
+git submodule update
 ```
 
 3. 编译
