@@ -1,4 +1,4 @@
-## 使用说明
+## 配置
 1. 创建工作空间
 ``` 
 mkdir ~/Swarm_ws
@@ -26,7 +26,41 @@ source /home/USER_NAME/Swarm_ws/devel/setup.bash
 # 或者把这句话加在~/.bashrc（或者~/.zshrc），然后重开一个终端，就不用每次都执行上面这句了
 ```
 
-5. 开发
+5. 替换RflySim配置文件
+在Windows电脑下，把`rflysim-config`文件夹内容拷到PX4PSP对应路径下。其中`oldfactory_HITL.bat`和`oldfactory_SITL.bat`是硬件在环和软件在环仿真快速启动脚本，`client_ue4_broadcast.py`是加入小球和传图脚本。
+
+
+
+
+## 使用
+1. 在Windows电脑下运行`oldfactory_SITL.bat`或者`oldfactory_HITL.bat`，加入小球需要运行`client_ue4_broadcast.py`。传图需要把`client_ue4_broadcast.py`内注释打开，对电脑性能要求高，待测试。
+
+2. 打开MATLAB和Simulink。可以在Windows或Linux电脑，注意需要自行判断ROSCORE的IP。
+
+3. 在Linux下运行。接收各种需要的消息
+    ```
+    # 终端1。其中IP为Windows电脑的IP地址
+    roslaunch mavros px4.launch fcu_url:="udp://:20101@IP:20100"
+
+    # 终端2[可选]。运行后得到图像话题，可以后续操作
+    roslaunch rflysim_ros_pkg cameras.launch
+    ```
+
+4. 手动解锁、起飞
+
+5. 执行任务
+    ```
+    # 终端3。注意需要为offboard.py添加可执行权限
+    rosrun decision offboard.py
+    ```
+
+6. 聚焦第5步弹出窗口，按a键进入offboard模式，执行第一个航路点。
+
+7. 开始Simulink仿真
+
+
+
+## 开发
 ```
 # 开发前获取最新版本
 git pull
@@ -38,3 +72,4 @@ git commit -m "say something"
 # 开发完成后，上传代码
 git push
 ```
+
