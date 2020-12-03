@@ -33,11 +33,15 @@ source /home/USER_NAME/Swarm_ws/devel/setup.bash
 
 
 ## 使用
-1. 在Windows电脑下运行`oldfactory_SITL.bat`或者`oldfactory_HITL.bat`，加入小球需要运行`client_ue4_broadcast.py`。传图需要把`client_ue4_broadcast.py`内注释打开，对电脑性能要求高，待测试。
+1. 在Windows电脑下运行`oldfactory_SITL.bat`或者`oldfactory_HITL.bat`。加入小球、传图需要运行`client_ue4_broadcast.py`。其中传图需要把`client_ue4_broadcast.py`内注释打开，对电脑性能要求高，待测试。
+```
+若Linux环境为VMware虚拟机，需要在Windows电脑下将需要将oldfactory_SITL.bat第39行修改为
+SET IS_BROADCAST=IP_Virtual
+其中IP_Virtual为虚拟机ip地址
+虚拟机网络适配器需采用 桥接模式（自动），选中 复制物理网络连接状态
+```
 
-2. 打开MATLAB和Simulink。可以在Windows或Linux电脑，注意需要自行判断ROSCORE的IP。
-
-3. 在Linux下运行。接收各种需要的消息
+2. 在Linux下运行。接收各种需要的消息
 ```
 # 终端1。其中IP为Windows电脑的IP地址
 roslaunch mavros px4.launch fcu_url:="udp://:20101@IP:20100"
@@ -46,7 +50,11 @@ roslaunch mavros px4.launch fcu_url:="udp://:20101@IP:20100"
 roslaunch rflysim_ros_pkg cameras.launch
 ```
 
-4. 手动解锁、起飞
+3. 打开MATLAB和Simulink，开始Simulink仿真。可以在Windows或Linux电脑，注意需要自行判断ROSCORE的IP。
+```
+rosinit("IP_Virtual")
+```
+4. 在QgroundControl中手动解锁、起飞
 
 5. 执行任务
 ```
@@ -56,7 +64,6 @@ rosrun decision offboard.py
 
 6. 聚焦第5步弹出窗口，按a键进入offboard模式，执行第一个航路点。
 
-7. 开始Simulink仿真
 
 
 
