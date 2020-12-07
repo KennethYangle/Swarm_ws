@@ -16,6 +16,7 @@ git submodule update
 
 3. 编译
 ```
+cd ..
 catkin_make
 ```
 
