@@ -54,10 +54,10 @@ class Px4Controller:
             self.pos_pub.publish(self.start_point)
             rate.sleep()
 
-        self.start_point.pose.position.x = 147
-        self.start_point.pose.position.y = -13
+        self.start_point.pose.position.x = 113
+        self.start_point.pose.position.y = 1.7
         self.start_point.pose.position.z = 4
-        for _ in range(200):
+        for _ in range(300):
             self.pos_pub.publish(self.start_point)
             rate.sleep()
 
@@ -114,8 +114,9 @@ class Decision:
                     b.middle = Point32(u[0][0], u[0][1], u[0][2])
                     b.left = Point32(u[1][0], u[1][1], u[1][2])
                     b.right = Point32(u[2][0], u[2][1], u[2][2])
-                    b.bottom = Point32(u[3][0], u[3][1], u[3][2])
-                    b.up = Point32(u[4][0], u[4][1], u[4][2])
+                    if len(u) > 3:
+                        b.bottom = Point32(u[3][0], u[3][1], u[3][2])
+                        b.up = Point32(u[4][0], u[4][1], u[4][2])
                     a.units.append(b)
                 print(a)
                 self.pipe_pub.publish(a)
