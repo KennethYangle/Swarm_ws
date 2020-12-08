@@ -22,9 +22,7 @@ class Px4Controller:
         self.state = None
         self.command = TwistStamped()
         self.start_point = PoseStamped()
-        self.start_point.pose.position.x = 10
-        self.start_point.pose.position.y = 20
-        self.start_point.pose.position.z = 2
+        self.start_point.pose.position.z = 4
         '''
         ros subscribers
         '''
@@ -52,8 +50,14 @@ class Px4Controller:
             self.offboard_state = self.offboard()
             rate.sleep()
 
-        self.takeoff()
         for _ in range(100):
+            self.pos_pub.publish(self.start_point)
+            rate.sleep()
+
+        self.start_point.pose.position.x = 147
+        self.start_point.pose.position.y = -13
+        self.start_point.pose.position.z = 4
+        for _ in range(200):
             self.pos_pub.publish(self.start_point)
             rate.sleep()
 
@@ -83,7 +87,7 @@ class Px4Controller:
             return False
 
     def takeoff(self):
-        if self.takeoffService(altitude=2):
+        if self.takeoffService(altitude=3):
             return True
         else:
             print("Vechile Takeoff failed")
