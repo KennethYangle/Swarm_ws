@@ -81,7 +81,8 @@ for i=1:N
         ci=dVtidksiti*ksiti(i,:)/norm(ksiti(i,:))+dVtidrtksii*drtpdksii;
         
         un=ksiti(i,:)-(dot(ksiti(i,:),nc(leader_locate(i),:))*nc(leader_locate(i),:));
-        V3(i,:)=-(un/norm(un))*dot(un/norm(un),ci);
+%         V3(i,:)=-(un/norm(un))*dot(un/norm(un),ci);
+        V3(i,:)=mysat(-(un/norm(un))*dot(un/norm(un),ci),2*vmax);
         if isnan(V3(i,1)) || isnan(V3(i,2))
             V3(i,:)=[0,0];
         end

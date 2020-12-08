@@ -3,15 +3,15 @@ clc;
 global N l_v 
 N=1;
 l_v=5;
-ts=0.01;
+ts=0.05;
 
-v_max=2;
+v_max=3;
 k1=1;
 
 rs=0.25;
 ra=0.6;
 
-width=2;
+width=3.5;
 EncirclePoint=[113,1.7;161,-9;211,-5;248,-18;262,-6;260,13;252,27;202,29;132,23;116,16;113,1.7];
 EncirclePoint_x=EncirclePoint(:,1);
 EncirclePoint_y=EncirclePoint(:,2);

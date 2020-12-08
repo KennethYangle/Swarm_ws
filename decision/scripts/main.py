@@ -24,10 +24,6 @@ class Px4Controller:
         self.start_point = PoseStamped()
         self.start_point.pose.position.z = 4
         '''
-        ros subscribers
-        '''
-        self.drone_state_sub = rospy.Subscriber('drone_1/state', UInt64, self.drone_state_cb)
-        '''
         ros publishers
         '''
         self.vel_pub = rospy.Publisher('mavros/setpoint_velocity/cmd_vel', TwistStamped, queue_size=10)
@@ -60,10 +56,6 @@ class Px4Controller:
         for _ in range(300):
             self.pos_pub.publish(self.start_point)
             rate.sleep()
-
-    def drone_state_cb(self, msg):
-        global drone_state
-        drone_state = msg.data
 
     def arm(self):
         if self.armService(True):
@@ -102,7 +94,7 @@ class Decision:
         print("Decision Initialized!")
 
     def start(self):
-        global drone_state
+        global drone_state, drone_state_pub
         while not rospy.is_shutdown():
             pipes = self.play["Drone1"]
             cnt_pipe = 0
@@ -122,7 +114,12 @@ class Decision:
                 self.pipe_pub.publish(a)
                 cnt_pipe += 1
                 drone_state = 30
+                drone_state_pub.publish(UInt64(drone_state))
             self.rate.sleep()
+
+def drone_state_cb(msg):
+    global drone_state
+    drone_state = msg.data
 
 
 if __name__ == '__main__':
@@ -135,9 +132,13 @@ if __name__ == '__main__':
     print(json.dumps(play))
 
     rospy.init_node('decision_node', anonymous=True)
+    drone_state_sub = rospy.Subscriber('drone_1/state', UInt64, drone_state_cb)
+    drone_state_pub = rospy.Publisher('drone_1/state', UInt64, queue_size=10)
     drone_state = 10
+    drone_state_pub.publish(UInt64(drone_state))
     px4 = Px4Controller()
     px4.start()
     drone_state = 20
+    drone_state_pub.publish(UInt64(drone_state))
     dd = Decision(play)
     dd.start()

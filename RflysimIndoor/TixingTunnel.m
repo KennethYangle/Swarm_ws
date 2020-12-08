@@ -334,6 +334,7 @@ for i=1:N
             end
         end
     end
+    V3(i,:)=mysat(V3(i,:),2*vmax);
     V(i,:)=mysat(V1(i,:)+V2(i,:)+V3(i,:),vmax);
 end
 
