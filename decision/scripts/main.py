@@ -95,9 +95,10 @@ class Decision:
 
     def start(self):
         global drone_state, drone_state_pub
+        cnt_pipe = 0
         while not rospy.is_shutdown():
             pipes = self.play["Drone1"]
-            cnt_pipe = 0
+            len_pipe = len(pipes)
             if drone_state == 20:
                 a = Pipeline()
                 a.pipetype.data = pipes[cnt_pipe]["pipetype"]
@@ -111,10 +112,12 @@ class Decision:
                         b.up = Point32(u[4][0], u[4][1], u[4][2])
                     a.units.append(b)
                 print(a)
-                self.pipe_pub.publish(a)
                 cnt_pipe += 1
                 drone_state = 30
                 drone_state_pub.publish(UInt64(drone_state))
+                if cnt_pipe >= len_pipe:
+                    break
+            self.pipe_pub.publish(a)
             self.rate.sleep()
 
 def drone_state_cb(msg):
@@ -142,3 +145,4 @@ if __name__ == '__main__':
     drone_state_pub.publish(UInt64(drone_state))
     dd = Decision(play)
     dd.start()
+    print("Finish")
