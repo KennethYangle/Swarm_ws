@@ -115,9 +115,8 @@ class Decision:
                 cnt_pipe += 1
                 drone_state = 30
                 drone_state_pub.publish(UInt64(drone_state))
-                if cnt_pipe >= len_pipe:
-                    break
             self.pipe_pub.publish(a)
+            if cnt_pipe >= len_pipe: break
             self.rate.sleep()
 
 def drone_state_cb(msg):
