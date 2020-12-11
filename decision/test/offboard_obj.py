@@ -167,7 +167,10 @@ class Px4Controller:
         obj_msg.angule.x = 0
         obj_msg.angule.y = 0
         obj_msg.angule.z = 0
-        obj_msg.type = 30
+        obj_msg.size.x = 5
+        obj_msg.size.y = 5
+        obj_msg.size.z = 1
+        obj_msg.type = 24
         obj_msg.id = 100
         while (rospy.is_shutdown() is False):
             cnt += 1
