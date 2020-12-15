@@ -1,0 +1,8 @@
+<launch>
+   <arg name="mav_id" default="1" />
+   <arg name="mav_num" default="3" />
+   <node pkg="decision" type="multi_drone.py" name="decision_node_$(arg mav_id)" output="screen">
+        <param name="mav_id" value="$(arg mav_id)"/>
+        <param name="mav_num" value="$(arg mav_num)"/>
+   </node>
+</launch>

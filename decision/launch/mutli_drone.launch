@@ -1,0 +1,14 @@
+<launch>
+   <include file="$(find decision)/launch/drone.launch">
+        <arg name="mav_id" value="1"/>
+        <arg name="mav_num" value="3"/>
+   </include>
+   <include file="$(find decision)/launch/drone.launch">
+        <arg name="mav_id" value="2"/>
+        <arg name="mav_num" value="3"/>
+   </include>
+   <include file="$(find decision)/launch/drone.launch">
+        <arg name="mav_id" value="3"/>
+        <arg name="mav_num" value="3"/>
+   </include>
+</launch>
