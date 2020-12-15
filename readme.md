@@ -80,7 +80,7 @@ git commit -m "say something"
 # 开发完成后，上传代码
 git push
 ```
-##多机
+## 多机
 1.更新Rflyim配件
 ```
 在windows电脑下，把rflysim-config文件夹下的“SITL_swam_oldfactor.bat”和“PX4MavCtrlV6.py”文件拷贝到PX4PSP对应路徑下，“SITL_swam_oldfactor.bat”为多机软件再换启动脚本（场景为废旧工厂），在windows电脑下双击，然后输入集群飞机数量；“PX4MavCtrlV6.py”为Rflysim最新Python接口，“sendUE4PosScale(self,copterID,vehicleType,MotorRPMSMean,PosE,AngEuler,Scale=[1,1,1],windowID=-1)”可改变添加物体（例如小球、油桶）尺寸大小，其他接口与原版相同。
