@@ -94,13 +94,13 @@ roslaunch rflysim_ros_pkg multi_mavros.launch
 现象：
 之前的/mavros......开头的节点名都会变成/drone_i/mavros......开头，因此订阅的消息都要做相应修改
 修改项：
-<arg name="fcu_url" default="udp://:20101@192.168.199.140:20100"/>中的“192.168.199.140”
-需要改成对应window电脑的IP地址，里面的三个都需要修改
+<arg name="IP" value="192.168.1.167" />中的“192.168.1.167”
+需要改成对应window电脑的IP地址
 ```
 ```
 注意：
-如需添加更多架飞机，在launch文件中依次添加下列代码，其中“<arg name="ID" value="i"/>”为添加的ID编号，这一项不能重名，“ <arg name="fcu_url" default="udp://:20101@192.168.199.140:20100"/>”中的20101和20100不同飞机端口号，也不能重复，“192.168.199.140”为windows电脑下的IP
-地址
+如需添加更多架飞机，在launch文件中依次添加下列代码，其中“<arg name="ID" value="i"/>”为添加的ID编号，这一项不能重名，“<arg name="fcu_url" default="udp://:20101@$(arg IP):20100"/>”中的20101和20100不同飞机端口号，也不能重复
+
    <group ns="drone_i">
       <arg name="ID" value="i"/>
       <arg name="fcu_url" default="udp://:20101@192.168.199.140:20100"/>
@@ -116,7 +116,7 @@ roslaunch rflysim_ros_pkg multi_mavros.launch
 
 3.终端2：启动坐标系系校准程序
 ```
-roslaunch decision mutli_drone.launch
+roslaunch decision multi_drone.launch
 现象：
 可订阅“/drone_i/mavros/local_position/pose_cor”节点消息，drone_i为相对应的飞机编号，此节点为矫正后（统一坐标系后的local_position坐标），为Point32类型。
 修改：
