@@ -39,7 +39,10 @@ class Px4Controller:
         self.drone_id = mav_id
         self.drone_num = mav_num
         self.is_attack = False
-        self.attack_pos = [0,30,1]
+        self.state_drone_1 = UInt64()
+        self.state_drone_2 = UInt64()
+        self.state_drone_3 = UInt64()
+        self.attack_pos = [180,10,1.5]
         mav_x = [0, -30, 0]
         mav_y = [60, 30, 0]
 
@@ -56,6 +59,9 @@ class Px4Controller:
         # self.local_pos_sub = rospy.Subscriber('/drone_%s/mavros/setpoint_position/local'%(self.drone_id), PoseStamped, self.local_pos_cb)
         self.bias_pos_sub = rospy.Subscriber('/drone_%s/mavros/local_position/pose_cor'%(param_id), PoseStamped, self.bias_cb)
         self.obs_sub = rospy.Subscriber("ue4_ros/drone_3/pos", Point32, self.obj_cb)
+        self.state1_sub = drone_state_sub = rospy.Subscriber("/drone_1/state", UInt64, self.state1_cb)
+        self.state1_sub = drone_state_sub = rospy.Subscriber("/drone_2/state", UInt64, self.state2_cb)
+        self.state1_sub = drone_state_sub = rospy.Subscriber("/drone_3/state", UInt64, self.state3_cb)
         '''
         ros services
         '''
@@ -75,21 +81,29 @@ class Px4Controller:
 
 
         while (rospy.is_shutdown() is False):
-            target = np.array([self.start_point.pose.position.x, self.start_point.pose.position.y, \
-                               self.start_point.pose.position.z])
-            feb = np.array([self.feb_bias_pos.x, self.feb_bias_pos.y, \
-                               self.feb_bias_pos.z])
+            # target = np.array([self.start_point.pose.position.x, self.start_point.pose.position.y, \
+            #                    self.start_point.pose.position.z])
+            # feb = np.array([self.feb_bias_pos.x, self.feb_bias_pos.y, \
+            #                    self.feb_bias_pos.z])
+            # if self.is_attack == True:
+            if self.state_drone_1 == 40 and self.state_drone_2 == 40 and self.state_drone_3 == 40:
+                self.is_attack == True
+            
             if self.is_attack == True:
                 target = np.array([self.attack_pos[0], self.attack_pos[1], self.attack_pos[2]])
-                
-            desire = self.pos_control(target, feb, 0.8, 5)
+                desire = self.pos_control(target, feb, 0.8, 5)
+            else:
+                desire[0] = 0
+                desire[1] = 0
+                desire[2] = 0
+
             self.obs_vel.x = 0
             self.obs_vel.y = 0
             self.obs_vel.z = 0
 
-            direct_obs = (self.feb_bias_pos.y - self.obs.y)/abs(self.feb_bias_pos.y - self.obs.y)
-            if abs(self.feb_bias_pos.y - self.obs.y) < 8 and self.drone_id == 3:
-                self.obs_vel.x = direct_obs * 0.6
+            direct_obs = (self.feb_bias_pos.x - self.obs.x)/abs(self.feb_bias_pos.x - self.obs.x)
+            if abs(self.feb_bias_pos.x - self.obs.x) < 8 and self.drone_id == 3:
+                self.obs_vel.y = direct_obs * 1.2
             self.command.twist.linear.x = desire[0] + self.obs_vel.x
             self.command.twist.linear.y = desire[1] + self.obs_vel.y
             self.command.twist.linear.z = desire[2] + self.obs_vel.z
@@ -110,6 +124,16 @@ class Px4Controller:
 
     def local_pos_cb(self, msg):
         self.feb_pos = msg
+    
+    def state1_cb(self,msg):
+        self.state_drone_1 = msg
+    
+    def state2_cb(self,msg):
+        self.state_drone_2 = msg
+
+    def state3_cb(self,msg):
+        self.state_drone_3 = msg
+
 
     def bias_cb(self, msg):
         self.feb_bias_pos.x = msg.pose.position.x
@@ -176,8 +200,8 @@ if __name__ == '__main__':
 
     px4 = Px4Controller(param_id, param_num)
 
-    inputThread = threading.Thread(target=px4.read_kbd_input)
-    inputThread.start()
+    # inputThread = threading.Thread(target=px4.read_kbd_input)
+    # inputThread.start()
 
     px4.start()
     # rospy.spin()

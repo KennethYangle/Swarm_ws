@@ -37,15 +37,15 @@ class Obj_Move_Controller:
         self.sphere_msg.size.x = 0.1
         self.sphere_msg.size.y = 0.1
         self.sphere_msg.size.z = 0.1
-        self.sphere_msg.position.x = 0
-        self.sphere_msg.position.y = 30
-        self.sphere_msg.position.z = 0
+        self.sphere_msg.position.x = 180   #0
+        self.sphere_msg.position.y = 10  #30
+        self.sphere_msg.position.z = 0   #0
 
         self.people_msg.id = 50
         self.people_msg.type = 30
-        self.people_msg.position.x = 0
-        self.people_msg.position.y = 30
-        self.people_msg.position.z = 0
+        self.people_msg.position.x = 180   #0
+        self.people_msg.position.y = 10  #30
+        self.people_msg.position.z = 0   #0
         self.people_msg.angule.z = 0
         self.people_msg.size.x = 1
         self.people_msg.size.y = 1
@@ -73,13 +73,13 @@ class Obj_Move_Controller:
         cnt = -1
         while (rospy.is_shutdown() is False):
 
-            start = self.start_sphere.y
+            start = self.start_sphere.x
             # end = self.mav_pos.pose.position.y
-            end = self.mav_feb.y
+            end = self.mav_feb.x
             
             self.people_msg.angule.z = self.people_msg.angule.z + 0.1
             if abs(start - end) < 15:
-                self.sphere_msg.position.y = self.sphere_msg.position.y - 0.1
+                self.sphere_msg.position.x = self.sphere_msg.position.x + 0.1
                 if self.sphere_msg.position.z != self.mav_feb.z:
                     sphere_vel = self.sphere_control(self.mav_feb.z, self.sphere_msg.position.z, 0.8, 0.1)
                     self.sphere_msg.position.z = sphere_vel + self.sphere_msg.position.z

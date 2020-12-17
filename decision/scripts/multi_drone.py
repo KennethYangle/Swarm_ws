@@ -56,11 +56,13 @@ class Px4Controller:
             self.rate.sleep()
 
     def idle(self):
-        global drone_state
+        print("I'm in idle state!")
+        global drone_state, drone_state_pub
         idle_cmd = TwistStamped()
         while not rospy.is_shutdown():
             if drone_state == 40:
                 self.vel_pub.publish(idle_cmd)
+                drone_state_pub.publish(UInt64(40))
             self.rate.sleep()
 
     def arm(self):
@@ -118,12 +120,14 @@ class Decision:
                         b.bottom = Point32(u[3][0], u[3][1], u[3][2])
                         b.up = Point32(u[4][0], u[4][1], u[4][2])
                     a.units.append(b)
-                print(a)
+                # print(a)
                 cnt_pipe += 1
+                print("{} cnt_pipe is {}".format(self.drone_name, cnt_pipe))
                 drone_state = 30
                 drone_state_pub.publish(UInt64(drone_state))
             self.pipe_pub.publish(a)
-            if cnt_pipe >= len_pipe: break
+            if cnt_pipe >= len_pipe:
+                break
             self.rate.sleep()
 
 
@@ -173,6 +177,13 @@ if __name__ == '__main__':
     print("Finish")
 
     # Wait for next missions
-    drone_state = 40
-    drone_state_pub.publish(UInt64(drone_state))
-    px4.idle()
+    rospy.sleep(2)
+    while True:
+        print("{} drone_state is {}".format(drone_name, drone_state))
+        if drone_state == 20:
+            drone_state = 40
+            drone_state_pub.publish(UInt64(drone_state))
+            px4.idle()
+            break
+        else:
+            rospy.sleep(0.2)
