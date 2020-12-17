@@ -63,7 +63,7 @@ class Obj_Move_Controller:
         ros subscriber
         '''
         # self.local_sub = rospy.Subscriber('/mavros/local_position/pose', PoseStamped, self.local_pos_cb)
-        self.bias_pos_sub = rospy.Subscriber('/drone_3/mavros/local_position/pose_cor', Point32, self.bias_cb)
+        self.bias_pos_sub = rospy.Subscriber('/drone_3/mavros/local_position/pose_cor', PoseStamped, self.bias_cb)
       
         print("obj Controller Initialized!")
 
@@ -99,7 +99,9 @@ class Obj_Move_Controller:
         self.mav_pos = msg
 
     def bias_cb(self, msg):
-        self.mav_feb = msg
+        self.mav_feb.x = msg.pose.position.x
+        self.mav_feb.y = msg.pose.position.y
+        self.mav_feb.z = msg.pose.position.z
 
     def arm(self):
         if self.armService(True):

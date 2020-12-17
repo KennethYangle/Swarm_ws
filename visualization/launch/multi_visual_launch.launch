@@ -1,15 +1,18 @@
 <launch>
-   <node name="pipeline_vision_red" pkg="visualization" type="visual_pipe_plus.py" output="screen"/>
-        <param name="drone_id" value="1" />
-        <param name="type" value="27" />
-   <node name="pipeline_vision_green" pkg="visualization" type="visual_pipe_plus.py" output="screen"/>
-        <param name="drone_id" value="2" />
-        <param name="type" value="28" />
-   <node name="pipeline_vision_blue" pkg="visualization" type="visual_pipe_plus.py" output="screen"/>
-        <param name="drone_id" value="3" />
-        <param name="type" value="29" />
+   <include file="$(find visualization)/launch/multi_visual_unit.launch">
+        <arg name="drone_id" value="1"/>
+        <arg name="type" value="27"/>
+   </include>
+   <include file="$(find visualization)/launch/multi_visual_unit.launch">
+        <arg name="drone_id" value="2"/>
+        <arg name="type" value="28"/>
+   </include>
+   <include file="$(find visualization)/launch/multi_visual_unit.launch">
+        <arg name="drone_id" value="3"/>
+        <arg name="type" value="29"/>
+   </include>
 
-   <arg name="ip" default="192.168.1.167" />
+   <arg name="ip" default="192.168.199.140" />
    <arg name="mav_x" default="-188" />
    <arg name="mav_y" default="-192" />
    <arg name="mav_z" default="0" />

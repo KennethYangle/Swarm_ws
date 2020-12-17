@@ -7,9 +7,6 @@ from swarm_msgs.msg import Pipeline, Pipeunit
 from geometry_msgs.msg import PoseStamped, TwistStamped, Point32
 from rflysim_ros_pkg.msg import Obj
 
-idex = 100
-id = 0
-
 
 def draw_unit(id, start, end):
     global obj_pub, param_type
@@ -28,7 +25,7 @@ def draw_unit(id, start, end):
 
 
 def pipeline_cb(msg):
-    global id
+    global id, idex
     piple = msg.units
 
     for i, u in enumerate(piple):
@@ -50,6 +47,9 @@ if __name__ == '__main__':
     param_id = rospy.get_param("~drone_id")
     param_type = int(rospy.get_param("~type"))
     drone_name = "drone_{}".format(param_id)
+
+    idex = 100*param_id
+    id = 0
 
     obj_pub = rospy.Publisher("ue4_ros/obj", Obj, queue_size=10)
     rospy.Subscriber("{}/decision_info".format(drone_name), Pipeline, pipeline_cb)
