@@ -74,10 +74,68 @@ rosrun decision offboard.py
 git pull
 # 可选，更新子模块
 git submodule update
-# 开发过程中，可以回到~/Swarm_ws/src目录下，提交代码
+# 开发过程中，可以回到~/Swarm_ws/src目录下，提交代码 
 git add .
 git commit -m "say something"
 # 开发完成后，上传代码
 git push
 ```
+## 多机
+1.更新Rflyim配件
+```
+在windows电脑下，把rflysim-config文件夹下的“SITL_swam_oldfactor.bat”和“PX4MavCtrlV6.py”文件拷贝到PX4PSP对应路徑下，“SITL_swam_oldfactor.bat”为多机软件再换启动脚本（场景为废旧工厂），在windows电脑下双击，然后输入集群飞机数量；“PX4MavCtrlV6.py”为Rflysim最新Python接口，“sendUE4PosScale(self,copterID,vehicleType,MotorRPMSMean,PosE,AngEuler,Scale=[1,1,1],windowID=-1)”可改变添加物体（例如小球、油桶）尺寸大小，其他接口与原版相同。
+注：使用上诉接口需更新最新版的Rflysim3D软件和Copterim软件
+```
 
+2.启动多机Mavros
+```
+#终端1：启动多机Mavros的launch文件
+roslaunch rflysim_ros_pkg multi_mavros.launch
+现象：
+之前的/mavros......开头的节点名都会变成/drone_i/mavros......开头，因此订阅的消息都要做相应修改
+修改项：
+<arg name="IP" value="192.168.1.167" />中的“192.168.1.167”
+需要改成对应window电脑的IP地址
+```
+```
+注意：
+如需添加更多架飞机，在launch文件中依次添加下列代码，其中“<arg name="ID" value="i"/>”为添加的ID编号，这一项不能重名，“<arg name="fcu_url" default="udp://:20101@$(arg IP):20100"/>”中的20101和20100不同飞机端口号，也不能重复
+
+   <group ns="drone_i">
+      <arg name="ID" value="i"/>
+      <arg name="fcu_url" default="udp://:20101@192.168.199.140:20100"/>
+      <!-- MAVROS -->
+      <include file="$(find mavros)/launch/px4.launch">
+         <arg name="fcu_url" value="$(arg fcu_url)"/>
+         <arg name="gcs_url" value=""/>
+         <arg name="tgt_system" value="$(arg ID)"/>
+         <arg name="tgt_component" value="1"/>
+      </include>
+   </group>
+```
+
+3.终端2：启动坐标系系校准程序
+```
+roslaunch decision multi_drone.launch
+现象：
+可订阅“/drone_i/mavros/local_position/pose_cor”节点消息，drone_i为相对应的飞机编号，此节点为矫正后（统一坐标系后的local_position坐标），为Point32类型。
+修改：
+如果添加更多项飞机，则需要修改所有的下列项
+1）“<arg name="drone_id" value="1"/>”中的“value="1"”以此编号，与步骤2中的飞机编号相对应
+2）“<arg name="drone_num" value="3"/>”中的“value="3"”要改成添加的飞机数量，例如飞机数量时8，则需修改为8
+```
+
+```
+注意：
+如果不需要飞机自动飞行，屏蔽launch文件中的这些项（目前一共三项），这些启动的是测试时所用的飞机控制程序
+   <include file="$(find decision)/launch/drone.launch">
+        <arg name="drone_id" value="1"/>
+        <arg name="drone_num" value="3"/>
+   </include>
+
+保留下列项即可：
+   <include file="$(find decision)/launch/bias.launch">
+        <arg name="drone_id" value="1"/>
+        <arg name="drone_num" value="3"/>
+   </include>
+```
