@@ -22,6 +22,7 @@ class Px4Controller:
         self.start_point = PoseStamped()
         self.start_point.pose.position.z = 4
         self.drone_name = drone_name
+        self.rate = rospy.Rate(20)
         '''
         ros publishers
         '''
@@ -36,24 +37,31 @@ class Px4Controller:
         print("Px4 Controller Initialized!")
 
     def start(self):
-        rate = rospy.Rate(20)
 
         for _ in range(10):
             self.vel_pub.publish(self.command)
             self.arm_state = self.arm()
             self.offboard_state = self.offboard()
-            rate.sleep()
+            self.rate.sleep()
 
         for _ in range(100):
             self.pos_pub.publish(self.start_point)
-            rate.sleep()
+            self.rate.sleep()
 
         self.start_point.pose.position.x = 113
         self.start_point.pose.position.y = 1.7
         self.start_point.pose.position.z = 4
         for _ in range(300):
             self.pos_pub.publish(self.start_point)
-            rate.sleep()
+            self.rate.sleep()
+
+    def idle(self):
+        global drone_state
+        idle_cmd = TwistStamped()
+        while not rospy.is_shutdown():
+            if drone_state == 40:
+                self.vel_pub.publish(idle_cmd)
+            self.rate.sleep()
 
     def arm(self):
         if self.armService(True):
@@ -163,3 +171,8 @@ if __name__ == '__main__':
     dd = Decision(play, drone_name)
     dd.start()
     print("Finish")
+
+    # Wait for next missions
+    drone_state = 40
+    drone_state_pub.publish(UInt64(drone_state))
+    px4.idle()

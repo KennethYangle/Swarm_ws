@@ -1,6 +1,4 @@
 <launch>
-   <node name="pipeline_vision" pkg="visualization" type="visual_pipe_plus.py" output="screen"/>
-
    <arg name="ip" default="192.168.199.140" />
    <arg name="mav_x" default="-188" />
    <arg name="mav_y" default="-192" />
