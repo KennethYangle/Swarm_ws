@@ -54,7 +54,7 @@ class Px4Controller:
         ros subscriber
         '''
         # self.local_pos_sub = rospy.Subscriber('/drone_%s/mavros/setpoint_position/local'%(self.drone_id), PoseStamped, self.local_pos_cb)
-        self.bias_pos_sub = rospy.Subscriber('/drone_%s/mavros/local_position/pose_cor'%(param_id), Point32, self.bias_cb)
+        self.bias_pos_sub = rospy.Subscriber('/drone_%s/mavros/local_position/pose_cor'%(param_id), PoseStamped, self.bias_cb)
         self.obs_sub = rospy.Subscriber("ue4_ros/drone_3/pos", Point32, self.obj_cb)
         '''
         ros services
@@ -112,7 +112,9 @@ class Px4Controller:
         self.feb_pos = msg
 
     def bias_cb(self, msg):
-        self.feb_bias_pos = msg
+        self.feb_bias_pos.x = msg.pose.position.x
+        self.feb_bias_pos.y = msg.pose.position.y
+        self.feb_bias_pos.z = msg.pose.position.z
 
     def obj_cb(self, msg):
         self.obs = msg

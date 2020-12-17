@@ -32,9 +32,11 @@ for i=1:50:length(p_radius.data(1,1,:))
     plot(p_radius.data(:,1,i),p_radius.data(:,2,i),'r--','Linewidth',1);
     plot(p_left_encircle.data(:,1,i),p_left_encircle.data(:,2,i),'b--','Linewidth',1);
     plot(p_right_encircle.data(:,1,i),p_right_encircle.data(:,2,i),'g--','Linewidth',1);
-    plot(Pcur.data(:,1,i),Pcur.data(:,2,i),'r','Linewidth',0.2);
 end
-
+for i=1:3000
+        plot(Pcur.Data(1,1,i),Pcur.Data(1,2,i),'r','Linewidth',2);
+hold on
+end
 
 
 

@@ -162,6 +162,4 @@ if __name__ == '__main__':
     drone_state_pub.publish(UInt64(drone_state))
     dd = Decision(play, drone_name)
     dd.start()
-
-    rospy.spin()
     print("Finish")
