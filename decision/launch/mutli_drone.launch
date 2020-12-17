@@ -11,6 +11,7 @@
         <arg name="drone_id" value="3"/>
         <arg name="drone_num" value="3"/>
    </include>
+   <!-- </include>
    <include file="$(find decision)/launch/drone.launch">
         <arg name="drone_id" value="1"/>
         <arg name="drone_num" value="3"/>
@@ -22,5 +23,5 @@
    <include file="$(find decision)/launch/drone.launch">
         <arg name="drone_id" value="3"/>
         <arg name="drone_num" value="3"/>
-   </include>
+   </include> -->
 </launch>
