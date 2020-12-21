@@ -83,7 +83,11 @@ git push
 ## 多机
 1.更新Rflyim配件
 ```
-在windows电脑下，把rflysim-config文件夹下的“SITL_swam_oldfactor.bat”和“PX4MavCtrlV6.py”文件拷贝到PX4PSP对应路徑下，“SITL_swam_oldfactor.bat”为多机软件再换启动脚本（场景为废旧工厂），在windows电脑下双击，然后输入集群飞机数量；“PX4MavCtrlV6.py”为Rflysim最新Python接口，“sendUE4PosScale(self,copterID,vehicleType,MotorRPMSMean,PosE,AngEuler,Scale=[1,1,1],windowID=-1)”可改变添加物体（例如小球、油桶）尺寸大小，其他接口与原版相同。
+在windows电脑下，把rflysim-config文件夹下的“SITL_swam_oldfactor.bat”和“PX4MavCtrlV6.py”
+文件拷贝到PX4PSP对应路徑下，“SITL_swam_oldfactor.bat”为多机软件再换启动脚本（场景为废旧工厂），
+在windows电脑下双击，然后输入集群飞机数量；“PX4MavCtrlV6.py”为Rflysim最新Python接口，
+“sendUE4PosScale(self,copterID,vehicleType,MotorRPMSMean,PosE,AngEuler,Scale=[1,1,1],windowID=-1)”
+可改变添加物体（例如小球、油桶）尺寸大小，其他接口与原版相同。
 注：使用上诉接口需更新最新版的Rflysim3D软件和Copterim软件
 ```
 
@@ -99,7 +103,9 @@ roslaunch rflysim_ros_pkg multi_mavros.launch
 ```
 ```
 注意：
-如需添加更多架飞机，在launch文件中依次添加下列代码，其中“<arg name="ID" value="i"/>”为添加的ID编号，这一项不能重名，“<arg name="fcu_url" default="udp://:20101@$(arg IP):20100"/>”中的20101和20100不同飞机端口号，也不能重复
+如需添加更多架飞机，在launch文件中依次添加下列代码，其中“<arg name="ID" value="i"/>”为添加的ID编号，
+这一项不能重名，“<arg name="fcu_url" default="udp://:20101@$(arg IP):20100"/>”中的
+20101和20100不同飞机端口号，也不能重复
 
    <group ns="drone_i">
       <arg name="ID" value="i"/>
@@ -118,7 +124,8 @@ roslaunch rflysim_ros_pkg multi_mavros.launch
 ```
 roslaunch decision multi_drone.launch
 现象：
-可订阅“/drone_i/mavros/local_position/pose_cor”节点消息，drone_i为相对应的飞机编号，此节点为矫正后（统一坐标系后的local_position坐标），为Point32类型。
+可订阅“/drone_i/mavros/local_position/pose_cor”节点消息，drone_i为相对应的飞机编号，
+此节点为矫正后（统一坐标系后的local_position坐标），为Point32类型。
 修改：
 如果添加更多项飞机，则需要修改所有的下列项
 1）“<arg name="drone_id" value="1"/>”中的“value="1"”以此编号，与步骤2中的飞机编号相对应
@@ -138,4 +145,19 @@ roslaunch decision multi_drone.launch
         <arg name="drone_id" value="1"/>
         <arg name="drone_num" value="3"/>
    </include>
+```
+
+## 6架飞机简易启动
+1.在windows电脑下启动.bat文件
+
+2.Linux电脑下启动
+```
+GitHub最新版本，第一次使用时先输入下列指令：
+roscd main/shell/
+chmod +x 6_drone.sh
+
+之后启动只需运行一个终端，依次运行如下指令：
+roscd main/shell/
+./6_drone.sh
+在终端中看见6个mission receive字样后，马上启动simulink程序，启动慢了有些飞机会自动返航
 ```
