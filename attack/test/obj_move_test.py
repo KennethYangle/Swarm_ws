@@ -28,22 +28,23 @@ class Obj_Move_Controller:
         self.start_sphere = Point32()
         self.mav_feb = Point32()
         self.obj_pos = Point32()
+        self.attack_num = UInt64()
 
         self.sphere_msg = Obj()
         self.people_msg = Obj()
         
-        self.sphere_msg.id = 60
+        self.sphere_msg.id = 50
         self.sphere_msg.type = 152
         self.sphere_msg.size.x = 0.1
         self.sphere_msg.size.y = 0.1
         self.sphere_msg.size.z = 0.1
-        self.sphere_msg.position.x = 180   #0
+        self.sphere_msg.position.x = 195   #0
         self.sphere_msg.position.y = 10  #30
-        self.sphere_msg.position.z = 0   #0
+        self.sphere_msg.position.z = -0.1   #0
 
-        self.people_msg.id = 50
+        self.people_msg.id = 60
         self.people_msg.type = 30
-        self.people_msg.position.x = 180   #0
+        self.people_msg.position.x = 195   #0
         self.people_msg.position.y = 10  #30
         self.people_msg.position.z = 0   #0
         self.people_msg.angule.z = 0
@@ -59,11 +60,12 @@ class Obj_Move_Controller:
         '''
         self.obj_pub = rospy.Publisher("ue4_ros/obj", Obj, queue_size=10)
         self.obj_pos_pub = rospy.Publisher("ue4_ros/drone_3/pos", Point32, queue_size=10)
+        self.attack_key = rospy.Subscriber("/is_attrack", UInt64, self.attack_cb)
         '''
         ros subscriber
         '''
         # self.local_sub = rospy.Subscriber('/mavros/local_position/pose', PoseStamped, self.local_pos_cb)
-        self.bias_pos_sub = rospy.Subscriber('/drone_3/mavros/local_position/pose_cor', PoseStamped, self.bias_cb)
+        self.bias_pos_sub = rospy.Subscriber('/drone_1/mavros/local_position/pose_cor', PoseStamped, self.bias_cb)
       
         print("obj Controller Initialized!")
 
@@ -71,26 +73,39 @@ class Obj_Move_Controller:
         rate = rospy.Rate(20)
         
         cnt = -1
+        flag = 1
         while (rospy.is_shutdown() is False):
-
+            cnt = (cnt + 1)%20
             start = self.start_sphere.x
             # end = self.mav_pos.pose.position.y
             end = self.mav_feb.x
-            
-            self.people_msg.angule.z = self.people_msg.angule.z + 0.1
-            if abs(start - end) < 15:
-                self.sphere_msg.position.x = self.sphere_msg.position.x + 0.1
+
+            if self.attack_num.data == 20 and abs(start - end) > 10:
+                self.sphere_msg.position.y = self.mav_feb.y
+                last_feb = self.mav_feb.y
+            elif self.attack_num.data == 20 and abs(start - end) < 10:
+                self.sphere_msg.position.y = last_feb
+            else:
+                self.sphere_msg.position.y = 8
+
+            self.people_msg.angule.z = self.people_msg.angule.z - np.pi
+            if abs(start - end) < 15 and self.attack_num.data == 20:
+                self.sphere_msg.position.x = self.sphere_msg.position.x - 0.1
                 if self.sphere_msg.position.z != self.mav_feb.z:
                     sphere_vel = self.sphere_control(self.mav_feb.z, self.sphere_msg.position.z, 0.8, 0.1)
                     self.sphere_msg.position.z = sphere_vel + self.sphere_msg.position.z
 
-            self.obj_pos.x = self.sphere_msg.position.x
-            self.obj_pos.y = self.sphere_msg.position.y
-            self.obj_pos.z = self.sphere_msg.position.z
-
+                self.obj_pos.x = self.sphere_msg.position.x
+                self.obj_pos.y = self.sphere_msg.position.y
+                self.obj_pos.z = self.sphere_msg.position.z
+                self.obj_pub.publish(self.sphere_msg)
+            if cnt > 10:
+                flag = 2
             # print("sphere_x:{}".format(self.sphere_msg.position.y))
-            self.obj_pub.publish(self.people_msg)
-            self.obj_pub.publish(self.sphere_msg)
+            if flag == 1:
+                self.obj_pub.publish(self.people_msg)
+                # flag = 2
+            # self.obj_pub.publish(self.sphere_msg)
             self.obj_pos_pub.publish(self.obj_pos)
             rate.sleep()
         rospy.spin
@@ -109,6 +124,10 @@ class Obj_Move_Controller:
         else:
             print("Vehicle arming failed!")
             return False
+
+    def attack_cb(self, msg):
+        self.attack_num = msg
+
 
      #期望位置，反馈位置，位置比例系数，速读限幅
     def pos_control(self, target_pos, feb_pos, kp, sat_vel):
