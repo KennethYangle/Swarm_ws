@@ -15,7 +15,7 @@ def draw_unit(id, start, end):
     obj_msg.type = param_type
     obj_msg.position.x = (start.x + end.x) / 2
     obj_msg.position.y = (start.y + end.y) / 2
-    obj_msg.position.z = 0.1
+    obj_msg.position.z = 0.3
     obj_msg.angule.z = np.arctan2(end.y - start.y, end.x - start.x)
     obj_msg.size.x = np.linalg.norm([end.y - start.y, end.x - start.x])
     obj_msg.size.y = 0.2

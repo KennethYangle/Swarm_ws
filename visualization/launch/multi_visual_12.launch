@@ -1,52 +1,52 @@
 <launch>
    <include file="$(find visualization)/launch/multi_visual_unit.launch">
         <arg name="drone_id" value="1"/>
-        <arg name="type" value="27"/>
+        <arg name="type" value="207"/>
    </include>
    <include file="$(find visualization)/launch/multi_visual_unit.launch">
         <arg name="drone_id" value="2"/>
-        <arg name="type" value="27"/>
+        <arg name="type" value="207"/>
    </include>
    <include file="$(find visualization)/launch/multi_visual_unit.launch">
         <arg name="drone_id" value="3"/>
-        <arg name="type" value="27"/>
+        <arg name="type" value="207"/>
    </include>
    <include file="$(find visualization)/launch/multi_visual_unit.launch">
         <arg name="drone_id" value="4"/>
-        <arg name="type" value="27"/>
+        <arg name="type" value="207"/>
    </include>
    <include file="$(find visualization)/launch/multi_visual_unit.launch">
         <arg name="drone_id" value="5"/>
-        <arg name="type" value="27"/>
+        <arg name="type" value="207"/>
    </include>
    <include file="$(find visualization)/launch/multi_visual_unit.launch">
         <arg name="drone_id" value="6"/>
-        <arg name="type" value="27"/>
+        <arg name="type" value="207"/>
    </include>
 
    <include file="$(find visualization)/launch/multi_visual_unit.launch">
         <arg name="drone_id" value="7"/>
-        <arg name="type" value="27"/>
+        <arg name="type" value="207"/>
    </include>
    <include file="$(find visualization)/launch/multi_visual_unit.launch">
         <arg name="drone_id" value="8"/>
-        <arg name="type" value="27"/>
+        <arg name="type" value="207"/>
    </include>
    <include file="$(find visualization)/launch/multi_visual_unit.launch">
         <arg name="drone_id" value="9"/>
-        <arg name="type" value="27"/>
+        <arg name="type" value="207"/>
    </include>
    <include file="$(find visualization)/launch/multi_visual_unit.launch">
         <arg name="drone_id" value="10"/>
-        <arg name="type" value="27"/>
+        <arg name="type" value="207"/>
    </include>
    <include file="$(find visualization)/launch/multi_visual_unit.launch">
         <arg name="drone_id" value="11"/>
-        <arg name="type" value="27"/>
+        <arg name="type" value="207"/>
    </include>
    <include file="$(find visualization)/launch/multi_visual_unit.launch">
         <arg name="drone_id" value="12"/>
-        <arg name="type" value="27"/>
+        <arg name="type" value="207"/>
    </include>
 
 
