@@ -12,7 +12,7 @@ local_pos_bia = PoseStamped()
 
 def local_pos_cb(msg):
     global local_pos_pub, param_num, param_id,local_pos_bia
-    
+    '''
     # 以及UE4生成的飞机法则进行编号，如果ue4生成方式变化，这里也需要编号
     cloum = (param_num+1)//2
     if param_id > cloum:
@@ -20,6 +20,11 @@ def local_pos_cb(msg):
     else:
         bias_ue4_x = 0
     bias_ue4_y = 2 * ((param_id -1) % cloum)
+    '''
+    cloum = int(np.sqrt(param_num-1)) + 1
+    bias_ue4_x = 2 * ((param_id - 1)//cloum)
+    bias_ue4_y = 2 * ((param_id - 1) % cloum)
+
     
     # 坐标转换，ue4_y对应mavros_x，ue4_x对应mavros_y
     local_pos_bia.header = msg.header

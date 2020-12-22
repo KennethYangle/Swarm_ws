@@ -125,8 +125,8 @@ if __name__ == '__main__':
     feb_pos = Point32()
     param_id = rospy.get_param("~drone_id")
     param_num = rospy.get_param("~drone_num")
-    # bias_pos_sub = rospy.Subscriber('/drone_%s/mavros/local_position/pose_cor'%(param_id), Point32, bias_cb)
-    bias_pos_sub = rospy.Subscriber('/drone_%s/mavros/local_position/pose'%(param_id), PoseStamped, bias_cb)
+    bias_pos_sub = rospy.Subscriber('/drone_%s/mavros/local_position/pose_cor'%(param_id), PoseStamped, bias_cb)
+    # bias_pos_sub = rospy.Subscriber('/drone_%s/mavros/local_position/pose'%(param_id), PoseStamped, bias_cb)
 
     px4 = Px4Controller(param_id,param_num,feb_pos)
     px4.start()
