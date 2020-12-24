@@ -139,7 +139,7 @@ def drone_state_cb(msg):
 
 if __name__ == '__main__':
     # Load play file
-    file_path = os.path.join(os.path.expanduser('~'),"Swarm_ws/src/decision/scenarios","play.json")
+    file_path = os.path.join(os.path.expanduser('~'),"Swarm_ws/src/decision/scenarios","play_6directions_12drones.json")
     play_file = open(file_path)
     play = json.load(play_file)
     print(json.dumps(play))
