@@ -5,7 +5,7 @@
 //
 // Model version                  : 1.88
 // Simulink Coder version         : 9.0 (R2018b) 24-May-2018
-// C/C++ source code generated on : Tue Dec 22 16:54:16 2020
+// C/C++ source code generated on : Fri Dec 25 16:18:22 2020
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -30,7 +30,7 @@ P_RflysimIndoorController_r20_T RflysimIndoorController_r2018_P = {
   // Variable: ra
   //  Referenced by: '<Root>/Constant10'
 
-  0.6,
+  0.8,
 
   // Variable: rs
   //  Referenced by: '<Root>/Constant9'

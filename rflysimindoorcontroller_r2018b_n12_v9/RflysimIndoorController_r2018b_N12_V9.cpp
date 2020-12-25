@@ -5,7 +5,7 @@
 //
 // Model version                  : 1.88
 // Simulink Coder version         : 9.0 (R2018b) 24-May-2018
-// C/C++ source code generated on : Tue Dec 22 16:54:16 2020
+// C/C++ source code generated on : Fri Dec 25 16:18:22 2020
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -581,7 +581,7 @@ static void RflysimIndoorCont_Encirclement4(const real_T p_leader[1000], const
           + 12]);
         RflysimIndoorController_r2018_B.rtksii = RflysimIndoorController_r2_norm
           (RflysimIndoorController_r2018_B.ep);
-        RflysimIndoorController_r2018_B.disti = 3.0 * vmax *
+        RflysimIndoorController_r2018_B.disti = 20.0 * vmax *
           RflysimIndoorControll_dmysigma2(RflysimIndoorController_r2018_B.rtksii,
           2.0 * rs, rs + ra);
         RflysimIndoorController_r2018_B.dis_leader_min +=
