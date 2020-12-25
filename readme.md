@@ -147,17 +147,16 @@ roslaunch decision multi_drone.launch
    </include>
 ```
 
-## 6架飞机简易启动
+## 一键启动
 1.在windows电脑下启动.bat文件
 
 2.Linux电脑下启动
 ```
 GitHub最新版本，第一次使用时先输入下列指令：
 roscd main/shell/
-chmod +x 6_drone.sh
+chmod +x 12_drone.sh
 
 之后启动只需运行一个终端，依次运行如下指令：
 roscd main/shell/
-./6_drone.sh
-在终端中看见6个mission receive字样后，马上启动simulink程序，启动慢了有些飞机会自动返航
+./12_drone.sh
 ```
