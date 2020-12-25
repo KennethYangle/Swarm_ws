@@ -152,11 +152,11 @@ roslaunch decision multi_drone.launch
 
 2.Linux电脑下启动
 ```
-GitHub最新版本，第一次使用时先输入下列指令：
+# GitHub最新版本，第一次使用时先输入下列指令：
 roscd main/shell/
 chmod +x 12_drone.sh
 
-之后启动只需运行一个终端，依次运行如下指令：
+# 之后启动只需运行一个终端，依次运行如下指令：
 roscd main/shell/
 ./12_drone.sh
 ```
